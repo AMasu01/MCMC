@@ -32,3 +32,71 @@ for(i in 1:length(n_seq)){
   lines(normgrid, dnorm(normgrid), col="red")                           #draw the density of a std. normal distribution into the histogram
   readline()                                                            #wait for user input (ie "enter")    
 }
+
+
+
+
+###Sheet 4
+#Ex 3
+#compute the quantiles of the exponential distribution
+my_qexp <- function(p, lambda = 3){
+  return(log(1-p)/(-lambda))
+}
+#create a sample from the exponential distribution with rate = 3
+exp_3_sample <- my_qexp(runif(5000))
+
+#Ex 4
+#define the non normalized density, ie it integrates not to one
+prop_dens <- function(x){  
+  return(cos(exp(-(x-2)^2)))*(x<=4)*(x>=0)
+}
+
+#compute the proportionality constant
+prop_const <- integrate(prop_dens, 0,4)
+
+#define the density
+dens <- function(x){
+  return(prop_dens(x)/3.409319)
+}
+
+#define the cdf
+prob <- function(x){
+  return(integrate(dens, lower=0, upper=x)$value)
+}
+
+#define a function to invert the cdf using optim
+to_min <- function(x, q){
+  return(abs(q-prob(x)))
+}
+
+#invert the cdf
+quant <- function(q){
+  return(optimise(to_min, interval = c(0,4), q=q)$minimum)
+}
+
+#draw a uniformly distributed random sample and initialize an empty vector to store the sample in
+quantiles <- runif(5000)
+sampled    <- rep(0,5000)
+#use the inversion method to sample from the given distribution
+for(i in 1:5000){
+  sampled[i] <- quant(quantiles[i])
+}
+truehist(sampled)
+
+
+#Ex 6
+# The given distribution function is the one of the Clayton Copula with parameter theta=0.5.
+#To sample from this distribution we first sample a value for X, then look at the conditional distribution of Y,
+# given the sampled value of X and draw a sample from this conditional distribution using the standard inversion technique.
+
+my_Clayton_cond_inverse <- function(u,p){
+  return(cbind(u,((p^(1/3)*sqrt(u))/(1-p^(1/3)+p^(1/3)*sqrt(u)))^2))
+}
+N <- 10000
+clayton_sample <- my_Clayton_cond_inverse(runif(N), runif(N))
+
+cov(clayton_sample)
+sum((clayton_sample[,1]>0.4&clayton_sample[,1]<0.6&clayton_sample[,2]>0.4&clayton_sample[,2]<0.6))/N
+sum(apply(clayton_sample,1,sum)<=0.5)/N
+
+#Ex 7
