@@ -100,3 +100,21 @@ sum((clayton_sample[,1]>0.4&clayton_sample[,1]<0.6&clayton_sample[,2]>0.4&clayto
 sum(apply(clayton_sample,1,sum)<=0.5)/N
 
 #Ex 7
+# First we need to compute the maximum of the given "density". Using the maximum we can create a rectangle that just covers
+# the density at it's maximum. Then we sample points from the rectangle and reject those that are above the density.
+# The maximum can be found analytically, it is located at 1/5 and has a value of approx. 0.082. Hence, a rectangle between
+# the points (0, 0), (1, 0), (0, 0.083), (1, 0.083) is suited to sample from the given density.
+
+beta_no_dens <- function(x,alpha,beta){
+  return(x^(alpha-1)*(1-x)^(beta-1))
+}
+
+x_cords     <- runif(100000)
+y_cords     <- runif(100000, max = 0.083)
+sample      <- x_cords[beta_no_dens(x_cords,2,5)>y_cords]
+truehist(sample)
+length(sample)
+
+
+mean(sample)    #theoretical value: alpha/(alpha+beta)=2/(2+5)=2/7~0.2857 -> very accurate
+var(sample)     #theoretical value: (alpha*beta)/((alpha+beta)^2*(alpha+beta+1))~0.02551 -> very accurate
