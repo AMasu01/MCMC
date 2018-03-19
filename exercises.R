@@ -118,3 +118,7 @@ length(sample)
 
 mean(sample)    #theoretical value: alpha/(alpha+beta)=2/(2+5)=2/7~0.2857 -> very accurate
 var(sample)     #theoretical value: (alpha*beta)/((alpha+beta)^2*(alpha+beta+1))~0.02551 -> very accurate
+
+
+
+###GitKrakentestcomment
