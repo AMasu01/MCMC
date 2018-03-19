@@ -2,12 +2,12 @@
 % implied conditions.
 
 % Bivariate prior
-prior_x = @(x) unifrnd(-1,1,[x,1]);
-prior_y = @(x) unifrnd(0,1,[x,1]);
+% prior_x = @(x) unifrnd(-1,1,[x,1]);
+% prior_y = @(x) unifrnd(0,1,[x,1]);
 
 %Alternative prior, uncomment to use
-% prior_x = @(x) normrnd(0,1,[x,1]);
-% prior_y = @(x) normrnd(0,1,[x,1]);
+prior_x = @(x) normrnd(0,1,[x,1]);
+prior_y = @(x) normrnd(0,1,[x,1]);
 
 % Sample
 N_sample = 50000;
