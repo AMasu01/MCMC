@@ -25,7 +25,12 @@ f_size = [12 7];
 fig1.Color = 'w';
 set(fig1,'PaperUnits','inches')
 set(fig1,'PaperSize',f_size)
-
+fig1.Name = ['IRF'];
+fig1.NumberTitle = 'off';
+fig1.Units = 'inches';
+fig1.Position = [0 0 f_size];
+    
+    
 subplot(321)
 histogram(x_sample_prior,50)
 title('p(X)')
