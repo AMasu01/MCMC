@@ -9,15 +9,15 @@ THETA_sim = [0.95,1.1,0.2];
 simulate_data % simulate data from a simple sv model
 
 
-THETA = [0.95,1.1,0.2];
-DATA = Y_sim;
+THETA     = [0.95,1.1,0.2];
+DATA      = Y_sim;
 
-N.p_x = 1000; % Number of particles
+N.p_x     = 1000; % Number of particles
 
-weights_x   = ones(N.p_x,1);
+weights_x = ones(N.p_x,1);
 
-X_old = normrnd(0,1,[N.p_x,1]);
-llikeli = 0;
+X_old     = normrnd(0,1,[N.p_x,1]);
+llikeli   = 0;
 
 
 for i = 1:size(DATA,2)
@@ -38,8 +38,8 @@ for i = 1:size(DATA,2)
     
     % Resample
     index_resample      = my_rndsamp(weights_update',N.p_x);
-    X_old                        = X(index_resample);
-    weights_x                 = ones(N.p_x,1);  % We resample every step, thus the weights are equal to unity
+    X_old               = X(index_resample);
+    weights_x           = ones(N.p_x,1);  % We resample every step, thus the weights are equal to unity
     
     % Plots
     if ~exist('fig1')
@@ -76,18 +76,18 @@ for i = 1:size(DATA,2)
     subplot(323)
     histogram(X,50)
     title('Histogram of X before resample')
-    xlim([-4,4])
+    xlim([min(X),max(X)])
     
     subplot(325)
     [~,index_sort] = sort(X);
     plot(X(index_sort),weights_update(index_sort),'-')
     title('Weights of X before resample')
-    xlim([-4,4])
+    xlim([min(X),max(X)])
     
     subplot(324)
     histogram(X_old,50)
     title('Histogram of X after resample')
-    xlim([-4,4])
+    xlim([min(X_old),max(X_old)])
     
     
     subplot(326)
