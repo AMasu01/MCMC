@@ -12,7 +12,7 @@ simulate_data % simulate data from a simple sv model
 THETA     = [0.95,1.1,0.2];
 DATA      = Y_sim;
 
-N.p_x     = 10; % Number of particles
+N.p_x     = 5000; % Number of particles
 
 weights_x = ones(N.p_x,1);
 
