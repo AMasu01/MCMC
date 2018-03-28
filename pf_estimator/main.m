@@ -49,26 +49,34 @@ end
   pause
   
   
- %% 2. Check cuts through the loglikelihood surface
- N_run = 50;
- N_theta = numel(THETA);
- names = {'rho','sigma_y','sigma_x'};
- loglikelihood_tracked = zeros(N_variants,N_run,size(DATA,2));
- for j = 1:N_theta
-     theta_vec = linspace(0.5*THETA(j),1.5*THETA(j),N_run);
-     for i = 1:N_run
-         Theta_use = THETA;
-         Theta_use(j) = theta_vec(i);
-         [~,loglikelihood_tracked(j,i,:)] = particle_filter(5000,DATA,Theta_use);
-     end
-     
-     % Plots
-     subplot(3,1,j)
-    plot(theta_vec,squeeze(loglikelihood_tracked(j,:,1:5:end)),'-k')
-    title(['Likelihood Cut: ',names{j}])
- end
- 
-
- 
+  %% 2. Check cuts through the loglikelihood surface
+  N_run                              = 50;
+  N_theta                           = numel(THETA);
+  names                             = {'\rho','\sigma_y','\sigma_x'};
+  loglikelihood_tracked    = zeros(N_variants,N_run,size(DATA,2));
+  
+  for j = 1:N_theta
+      theta_vec(j,:) = linspace(0.5*THETA(j),1.5*THETA(j),N_run);
+      for i = 1:N_run
+          Theta_use                                      =     THETA;
+          Theta_use(j)                                   = theta_vec(j,i);
+          [~,loglikelihood_tracked(j,i,:)]   = particle_filter(2000,DATA,Theta_use);
+      end
+      
+      
+  end
+  
+  % Plots
+  for k = 1:size(DATA,2)
+      for j = 1:N_theta
+          subplot(3,1,j)
+          plot(theta_vec(j,:) ,squeeze(loglikelihood_tracked(j,:,k)),'-b')
+          title(['Likelihood Cut: ',names{j},' at t = ', num2str(k)])
+      end
+      clc
+      fprintf('PRESS ANY KEY')
+      pause
+      clc
+  end
 
     
